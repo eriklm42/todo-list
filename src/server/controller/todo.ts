@@ -42,8 +42,6 @@ async function get(req: Request) {
       limit,
     });
 
-    console.log({ output });
-
     return new Response(
       JSON.stringify({
         total: output.total,
@@ -72,8 +70,6 @@ const TodoCreateBodySchema = schema.object({
   content: schema.string(),
 });
 async function create(req: Request) {
-  console.log("Oie entrei na criação");
-
   const body = TodoCreateBodySchema.safeParse(await req.json());
   if (!body.success) {
     return new Response(
@@ -89,8 +85,6 @@ async function create(req: Request) {
     );
   }
   try {
-    console.log({ body: body.data.content });
-
     const createdTodo = await todoRepository.createByContent(body.data.content);
 
     return new Response(

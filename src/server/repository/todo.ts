@@ -30,11 +30,7 @@ async function get({
 
   if (error) throw new Error("Failed to fetch data");
 
-  console.log({ data, error, count });
-
   const parsedData = TodoSchema.array().safeParse(data);
-
-  console.log({ parsedData: JSON.stringify(parsedData, null, 2) });
 
   if (!parsedData.success) {
     throw new Error("Failed to parse TODO from database");
@@ -43,12 +39,6 @@ async function get({
   const todos = parsedData.data;
   const total = count || todos.length;
   const totalPages = Math.ceil(total / currentLimit);
-
-  console.log({
-    todos,
-    total,
-    pages: totalPages,
-  });
 
   return {
     todos,
@@ -68,13 +58,9 @@ async function createByContent(content: string): Promise<Todo> {
     .select()
     .single();
 
-  console.log({ data, error });
-
   if (error) throw new Error("Failed to create todo");
 
   const parsedData = TodoSchema.parse(data);
-
-  console.log({ parsedData: JSON.stringify(parsedData, null, 2) });
 
   return parsedData;
 }
@@ -85,8 +71,6 @@ async function getTodoById(id: string): Promise<Todo> {
     .select("*")
     .eq("id", id)
     .single();
-
-  console.log({ data, error });
 
   if (error) throw new Error("Failed to get todo by id");
 
